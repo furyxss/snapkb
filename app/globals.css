@@ -130,3 +130,13 @@ select {
   max-width: 100%;
   height: auto;
 }
+
+.docx-hidden-renderer .docx-export-wrapper {
+  background: #ffffff;
+}
+
+.docx-hidden-renderer .docx-export-wrapper > section {
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #ffffff;
+}
