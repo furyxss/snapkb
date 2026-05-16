@@ -26,11 +26,11 @@ const tools = [
     metric: "50 KB",
   },
   {
-    name: "Resize dimensions",
-    description: "Prepare width and height for marketplaces, applications, and content systems.",
-    href: "#roadmap",
-    status: "Next",
-    metric: "W x H",
+    name: "DOCX to PDF",
+    description: "Convert Word documents into downloadable PDF files with a browser preview.",
+    href: "/docx-to-pdf",
+    status: "Live",
+    metric: "PDF",
   },
   {
     name: "PNG to JPG",
@@ -195,7 +195,7 @@ export default function Home() {
           <div className="grid gap-4">
             {[
               "Resize by width, height, or platform preset",
-              "Convert PNG, JPG, and WebP formats",
+              "Convert JPG and WebP formats",
               "Crop profile and document-style photos",
               "Batch compress images for creators and operators",
             ].map((item) => (
