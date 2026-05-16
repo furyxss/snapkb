@@ -35,8 +35,8 @@ const tools = [
   {
     name: "PNG to JPG",
     description: "Convert large transparent-free PNG files into lighter, easier-to-upload JPGs.",
-    href: "#roadmap",
-    status: "Next",
+    href: "/png-to-jpg",
+    status: "Live",
     metric: "Convert",
   },
   {

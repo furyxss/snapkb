@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://pixelpress.app";
+  const baseUrl = "https://snapkb.vercel.app";
 
   return [
     "",
     "/compress-image-to-100kb",
     "/compress-image-to-50kb",
+    "/png-to-jpg",
     "/privacy-policy",
     "/terms-of-service",
   ].map((path) => ({

@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://pixelpress.app/sitemap.xml",
+    sitemap: "https://snapkb.vercel.app/sitemap.xml",
   };
 }

@@ -43,6 +43,7 @@ export function SiteShell({
             <Link className="transition hover:text-ink" href="/#compressor">Compressor</Link>
             <Link className="transition hover:text-ink" href="/compress-image-to-100kb">100KB</Link>
             <Link className="transition hover:text-ink" href="/compress-image-to-50kb">50KB</Link>
+            <Link className="transition hover:text-ink" href="/png-to-jpg">PNG to JPG</Link>
             <Link className="transition hover:text-ink" href="/privacy-policy">Privacy</Link>
           </nav>
           <Link
