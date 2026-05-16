@@ -12,6 +12,11 @@ type DocxFile = {
   pageCount: number;
 };
 
+type RenderedPage = {
+  element: HTMLElement;
+  estimatedPages: number;
+};
+
 function formatBytes(bytes: number) {
   if (bytes < 1024) {
     return `${bytes} B`;
@@ -46,7 +51,32 @@ export function DocxToPdfConverter() {
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  async function renderHiddenDocument(arrayBuffer: ArrayBuffer) {
+  function getRenderedPages() {
+    if (!renderRef.current) {
+      throw new Error("Could not initialize the document renderer.");
+    }
+
+    const sections = Array.from(
+      renderRef.current.querySelectorAll<HTMLElement>(".docx-export-wrapper > section"),
+    );
+    const fallback = Array.from(renderRef.current.children).filter(
+      (child): child is HTMLElement => child instanceof HTMLElement,
+    );
+    const rawPages = sections.length ? sections : fallback;
+
+    return rawPages.map((element) => {
+      const width = Math.max(1, element.scrollWidth || element.offsetWidth);
+      const height = Math.max(1, element.scrollHeight || element.offsetHeight);
+      const a4HeightForWidth = width * (297 / 210);
+
+      return {
+        element,
+        estimatedPages: Math.max(1, Math.ceil(height / a4HeightForWidth)),
+      };
+    });
+  }
+
+  async function renderHiddenDocument(arrayBuffer: ArrayBuffer): Promise<RenderedPage[]> {
     if (!renderRef.current) {
       throw new Error("Could not initialize the document renderer.");
     }
@@ -66,7 +96,60 @@ export function DocxToPdfConverter() {
     });
     await waitForLayout();
 
-    return Array.from(renderRef.current.querySelectorAll<HTMLElement>(".docx-export-wrapper > section"));
+    return getRenderedPages();
+  }
+
+  function countEstimatedPages(pages: RenderedPage[]) {
+    return pages.reduce((total, page) => total + page.estimatedPages, 0);
+  }
+
+  async function addRenderedPageToPdf({
+    pdf,
+    element,
+    isFirstPage,
+    pageNumber,
+    totalPages,
+    scale,
+  }: {
+    pdf: jsPDF;
+    element: HTMLElement;
+    isFirstPage: boolean;
+    pageNumber: number;
+    totalPages: number;
+    scale: number;
+  }) {
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const canvas = await html2canvas(element, {
+      backgroundColor: "#ffffff",
+      scale,
+      useCORS: true,
+      logging: false,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+    });
+
+    const imageHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pageSlices = Math.max(1, Math.ceil(imageHeight / pdfHeight));
+
+    for (let slice = 0; slice < pageSlices; slice += 1) {
+      setProgress(`Exporting page ${pageNumber + slice} of ${totalPages}...`);
+
+      if (!isFirstPage || slice > 0) {
+        pdf.addPage();
+      }
+
+      pdf.addImage(
+        canvas.toDataURL("image/jpeg", 0.95),
+        "JPEG",
+        0,
+        -(slice * pdfHeight),
+        pdfWidth,
+        imageHeight,
+      );
+    }
+
+    return pageSlices;
   }
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
@@ -98,7 +181,7 @@ export function DocxToPdfConverter() {
         arrayBuffer,
         fileName: stripDocxExtension(file.name),
         fileSize: file.size,
-        pageCount: Math.max(1, pages.length),
+        pageCount: Math.max(1, countEstimatedPages(pages)),
       });
       setProgress("");
     } catch (err) {
@@ -126,35 +209,20 @@ export function DocxToPdfConverter() {
       }
 
       const pdf = new jsPDF("p", "pt", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
       const scale = Math.min(2, window.devicePixelRatio || 1.5);
+      const totalPages = Math.max(1, countEstimatedPages(pages));
+      let exportedPages = 0;
 
       for (let index = 0; index < pages.length; index += 1) {
-        setProgress(`Exporting page ${index + 1} of ${pages.length}...`);
-
-        const canvas = await html2canvas(pages[index], {
-          backgroundColor: "#ffffff",
+        const addedPages = await addRenderedPageToPdf({
+          pdf,
+          element: pages[index].element,
+          isFirstPage: exportedPages === 0,
+          pageNumber: exportedPages + 1,
+          totalPages,
           scale,
-          useCORS: true,
-          logging: false,
         });
-
-        if (index > 0) {
-          pdf.addPage();
-        }
-
-        const imageWidth = pdfWidth;
-        const imageHeight = Math.min(pdfHeight, (canvas.height * imageWidth) / canvas.width);
-
-        pdf.addImage(
-          canvas.toDataURL("image/jpeg", 0.95),
-          "JPEG",
-          0,
-          0,
-          imageWidth,
-          imageHeight,
-        );
+        exportedPages += addedPages;
       }
 
       pdf.save(`${docxFile.fileName}.pdf`);
