@@ -14,7 +14,8 @@ type DocxFile = {
 
 type RenderedPage = {
   element: HTMLElement;
-  estimatedPages: number;
+  width: number;
+  height: number;
 };
 
 function formatBytes(bytes: number) {
@@ -67,11 +68,11 @@ export function DocxToPdfConverter() {
     return rawPages.map((element) => {
       const width = Math.max(1, element.scrollWidth || element.offsetWidth);
       const height = Math.max(1, element.scrollHeight || element.offsetHeight);
-      const a4HeightForWidth = width * (297 / 210);
 
       return {
         element,
-        estimatedPages: Math.max(1, Math.ceil(height / a4HeightForWidth)),
+        width,
+        height,
       };
     });
   }
@@ -100,7 +101,38 @@ export function DocxToPdfConverter() {
   }
 
   function countEstimatedPages(pages: RenderedPage[]) {
-    return pages.reduce((total, page) => total + page.estimatedPages, 0);
+    return pages.reduce((total, page) => {
+      const a4HeightForWidth = page.width * (297 / 210);
+
+      return total + Math.max(1, Math.ceil(page.height / a4HeightForWidth));
+    }, 0);
+  }
+
+  function createCanvasSlice(canvas: HTMLCanvasElement, sourceY: number, sourceHeight: number) {
+    const slice = document.createElement("canvas");
+    slice.width = canvas.width;
+    slice.height = sourceHeight;
+
+    const context = slice.getContext("2d");
+    if (!context) {
+      throw new Error("Could not prepare a PDF page.");
+    }
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, slice.width, slice.height);
+    context.drawImage(
+      canvas,
+      0,
+      sourceY,
+      canvas.width,
+      sourceHeight,
+      0,
+      0,
+      slice.width,
+      sourceHeight,
+    );
+
+    return slice;
   }
 
   async function addRenderedPageToPdf({
@@ -129,8 +161,8 @@ export function DocxToPdfConverter() {
       windowHeight: element.scrollHeight,
     });
 
-    const imageHeight = (canvas.height * pdfWidth) / canvas.width;
-    const pageSlices = Math.max(1, Math.ceil(imageHeight / pdfHeight));
+    const sourcePageHeight = Math.floor(canvas.width * (pdfHeight / pdfWidth));
+    const pageSlices = Math.max(1, Math.ceil(canvas.height / sourcePageHeight));
 
     for (let slice = 0; slice < pageSlices; slice += 1) {
       setProgress(`Exporting page ${pageNumber + slice} of ${totalPages}...`);
@@ -139,14 +171,13 @@ export function DocxToPdfConverter() {
         pdf.addPage();
       }
 
-      pdf.addImage(
-        canvas.toDataURL("image/jpeg", 0.95),
-        "JPEG",
-        0,
-        -(slice * pdfHeight),
-        pdfWidth,
-        imageHeight,
-      );
+      const sourceY = slice * sourcePageHeight;
+      const remainingHeight = canvas.height - sourceY;
+      const sourceHeight = Math.min(sourcePageHeight, remainingHeight);
+      const pageCanvas = createCanvasSlice(canvas, sourceY, sourceHeight);
+      const pageImageHeight = (pageCanvas.height * pdfWidth) / pageCanvas.width;
+
+      pdf.addImage(pageCanvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, pdfWidth, pageImageHeight);
     }
 
     return pageSlices;
