@@ -6,19 +6,28 @@ export function SiteShell({
   eyebrow,
   title,
   intro,
+  panelTitle = "Why this tool hub converts",
+  panelItems = [
+    "Users come in with specific jobs to finish, not broad software research.",
+    "Single-purpose tools are fast to explain, fast to use, and easy to expand.",
+    "Each tool can rank for a clear keyword while the hub strengthens the whole site.",
+  ],
 }: {
   children: ReactNode;
   eyebrow: string;
   title: string;
   intro: string;
+  panelTitle?: string;
+  panelItems?: string[];
 }) {
   return (
     <div className="min-h-screen">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
         <Link href="/" className="text-xl font-black tracking-tight text-ink">
-          PixelPress
+          SnapKB
         </Link>
-        <nav className="flex items-center gap-5 text-sm font-medium text-slate-700">
+        <nav className="flex flex-wrap items-center gap-5 text-sm font-medium text-slate-700">
+          <Link href="/#tools">Tools</Link>
           <Link href="/compress-image-to-100kb">100KB</Link>
           <Link href="/compress-image-to-50kb">50KB</Link>
           <Link href="/privacy-policy">Privacy</Link>
@@ -39,12 +48,12 @@ export function SiteShell({
 
           <div className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
-              Why this tool converts
+              {panelTitle}
             </p>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
-              <li>People search with clear intent: 20KB, 50KB, 100KB, and upload limits.</li>
-              <li>No upload means fewer privacy concerns and lower hosting cost.</li>
-              <li>The product is easy to explain, demo, and improve with SEO pages.</li>
+              {panelItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </div>
         </section>
@@ -53,7 +62,7 @@ export function SiteShell({
       </main>
 
       <footer className="mx-auto flex w-full max-w-6xl flex-col gap-3 border-t border-[color:var(--border)] px-4 py-8 text-sm text-slate-600 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <p>PixelPress compresses images in your browser to reduce privacy and infrastructure cost.</p>
+        <p>SnapKB is growing into a lightweight online toolbox for image and file tasks.</p>
         <div className="flex items-center gap-4">
           <Link href="/terms-of-service">Terms</Link>
           <Link href="/privacy-policy">Privacy</Link>

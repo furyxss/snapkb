@@ -6,7 +6,7 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Compress Image to 100KB Online",
   description:
-    "Reduce JPG, PNG, and WebP images to 100KB online with a fast browser-based compressor.",
+    "Use SnapKB to reduce JPG, PNG, and WebP images to 100KB online with a fast browser-based compressor.",
 };
 
 export default function CompressImageTo100KbPage() {
@@ -14,7 +14,13 @@ export default function CompressImageTo100KbPage() {
     <SiteShell
       eyebrow="SEO landing page"
       title="Compress image to 100KB online"
-      intro="This page is built for one of the strongest search intents in the image tool market. Users can upload a file, set 100KB as the target, and download a compressed version in one short flow."
+      intro="This page is one working tool inside SnapKB, a focused hub for image and upload-friendly file utilities. Users can upload a file, set 100KB as the target, and download a compressed version in one short flow."
+      panelTitle="Why this page matters"
+      panelItems={[
+        "100KB is one of the clearest search intents in this category.",
+        "The user journey is short, practical, and easy to test on mobile.",
+        "This page can rank on its own while feeding traffic into the broader tool hub.",
+      ]}
     >
       <ImageCompressor
         defaultTargetKb={100}

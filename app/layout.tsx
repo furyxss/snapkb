@@ -13,25 +13,25 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pixelpress.app"),
+  metadataBase: new URL("https://snapkb.com"),
   title: {
-    default: "PixelPress | Compress Images to a Target Size",
-    template: "%s | PixelPress",
+    default: "SnapKB | Online Image and File Tools",
+    template: "%s | SnapKB",
   },
   description:
-    "Compress JPG, PNG, and WebP images to 20KB, 50KB, 100KB, or any custom size directly in your browser.",
+    "SnapKB is a lightweight online tool hub for image and file tasks like compressing images to 50KB, 100KB, and other upload-friendly sizes.",
   openGraph: {
-    title: "PixelPress | Compress Images to a Target Size",
+    title: "SnapKB | Online Image and File Tools",
     description:
-      "Reduce image size online without uploading your files. Fast browser-based compression for JPG, PNG, and WebP.",
-    siteName: "PixelPress",
+      "Use SnapKB for lightweight browser-based image and file utilities built for uploads, forms, creators, and quick tasks.",
+    siteName: "SnapKB",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PixelPress | Compress Images to a Target Size",
+    title: "SnapKB | Online Image and File Tools",
     description:
-      "Fast browser-based image compression for upload forms, resumes, and websites.",
+      "A small, practical online toolbox for image compression and other upload-friendly file utilities.",
   },
 };
 

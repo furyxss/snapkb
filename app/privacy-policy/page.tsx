@@ -3,7 +3,7 @@ import { SiteShell } from "@/components/site-shell";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy policy for the PixelPress browser-based image compression tool.",
+  description: "Privacy policy for SnapKB and its browser-based image and file tools.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -11,12 +11,12 @@ export default function PrivacyPolicyPage() {
     <SiteShell
       eyebrow="Legal"
       title="Privacy Policy"
-      intro="This first MVP keeps privacy simple by running the core compression flow inside the user's browser."
+      intro="SnapKB keeps privacy simple in this early version by running the core image compression flow inside the user's browser."
     >
       <section className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float">
         <div className="space-y-5 text-sm leading-7 text-slate-700">
           <p>
-            PixelPress is designed to minimize file handling on the server side. In the current MVP,
+            SnapKB is designed to minimize file handling on the server side. In the current MVP,
             image compression runs in the browser, which means selected files do not need to be
             uploaded to a backend for the primary compression workflow.
           </p>

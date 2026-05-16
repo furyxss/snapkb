@@ -3,7 +3,7 @@ import { SiteShell } from "@/components/site-shell";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms of service for the PixelPress browser-based image compression tool.",
+  description: "Terms of service for SnapKB and its browser-based image and file tools.",
 };
 
 export default function TermsOfServicePage() {
@@ -16,7 +16,7 @@ export default function TermsOfServicePage() {
       <section className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float">
         <div className="space-y-5 text-sm leading-7 text-slate-700">
           <p>
-            PixelPress is provided on an as-is basis for image compression and file size reduction.
+            SnapKB is provided on an as-is basis for image compression and file size reduction.
             The service may change, pause, or be removed at any time while the product is in MVP
             stage.
           </p>
