@@ -6,6 +6,7 @@ import { renderAsync } from "docx-preview";
 import html2canvas from "html2canvas";
 
 type DocxFile = {
+  file: File;
   arrayBuffer: ArrayBuffer;
   fileName: string;
   fileSize: number;
@@ -209,6 +210,7 @@ export function DocxToPdfConverter() {
       const pages = await renderHiddenDocument(arrayBuffer);
 
       setDocxFile({
+        file,
         arrayBuffer,
         fileName: stripDocxExtension(file.name),
         fileSize: file.size,
@@ -225,6 +227,50 @@ export function DocxToPdfConverter() {
   }
 
   async function exportPdf() {
+    if (!docxFile) {
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      setError(null);
+      setProgress("Converting with high-fidelity engine...");
+
+      const formData = new FormData();
+      formData.append("file", docxFile.file);
+
+      const response = await fetch("/api/docx-to-pdf", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const detail = await response.json().catch(() => null);
+        throw new Error(
+          detail?.error ||
+            "High-fidelity conversion is not available. Configure CONVERTAPI_SECRET on Vercel.",
+        );
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${docxFile.fileName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setProgress("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not export the PDF.");
+      setProgress("");
+    } finally {
+      setIsExporting(false);
+    }
+  }
+
+  async function exportBrowserPdf() {
     if (!docxFile || !renderRef.current) {
       return;
     }
@@ -232,7 +278,7 @@ export function DocxToPdfConverter() {
     try {
       setIsExporting(true);
       setError(null);
-      setProgress("Rendering pages...");
+      setProgress("Rendering browser fallback...");
 
       const pages = await renderHiddenDocument(docxFile.arrayBuffer);
       if (!pages.length) {
@@ -280,8 +326,9 @@ export function DocxToPdfConverter() {
               Upload DOCX, export PDF. No giant document preview.
             </h2>
             <p className="max-w-2xl text-base leading-7 text-slate-700">
-              SnapKB renders the document privately in a hidden workspace, captures each page, and
-              builds a PDF. The page stays clean even when your DOCX has dozens of pages.
+              SnapKB uses a server-side conversion engine for the main export path, which is the
+              right approach for Word-style pagination. A browser fallback remains available for
+              quick tests, but it may not match Word exactly.
             </p>
           </div>
 
@@ -309,8 +356,9 @@ export function DocxToPdfConverter() {
           </div>
 
           <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 px-4 py-4 text-sm leading-7 text-amber-900">
-            This version preserves layout better than text-only conversion, but exact Word fidelity
-            still requires a server-side LibreOffice or Microsoft Word conversion engine.
+            High-fidelity conversion requires a configured conversion provider key on Vercel. If it
+            is not configured, the fallback can still export a PDF, but complex Chinese documents
+            may paginate differently from Word or WPS.
           </div>
 
           {error ? (
@@ -380,7 +428,15 @@ export function DocxToPdfConverter() {
                 onClick={exportPdf}
                 disabled={isBusy}
               >
-                {isExporting ? "Exporting PDF..." : "Download PDF"}
+                {isExporting ? "Converting PDF..." : "Download high-fidelity PDF"}
+              </button>
+              <button
+                className="inline-flex w-full items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-5 py-4 text-sm font-black text-white transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-60"
+                type="button"
+                onClick={exportBrowserPdf}
+                disabled={isBusy}
+              >
+                Use browser fallback
               </button>
             </div>
           )}
