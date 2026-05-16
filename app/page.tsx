@@ -5,39 +5,39 @@ import Link from "next/link";
 
 const tools = [
   {
-    name: "Compress image to any target size",
+    name: "Compress image to a target size",
     description:
-      "Upload a JPG, PNG, or WebP file and shrink it for forms, resumes, and websites.",
+      "Shrink JPG, PNG, and WebP files for upload forms, resumes, and websites.",
     href: "/compress-image-to-100kb",
-    status: "Live now",
+    status: "Available",
   },
   {
     name: "Compress image to 50KB",
     description:
-      "A tighter landing page for stricter upload limits and smaller attachments.",
+      "Use a tighter preset for stricter upload limits and lightweight attachments.",
     href: "/compress-image-to-50kb",
-    status: "Live now",
+    status: "Available",
   },
   {
     name: "Resize image dimensions",
     description:
       "Prepare images for platform-specific width and height requirements.",
     href: "#next-tools",
-    status: "Coming next",
+    status: "Coming soon",
   },
   {
     name: "Convert PNG to JPG",
     description:
-      "Turn heavy PNG files into lighter JPG exports for fast uploads.",
+      "Turn heavy PNG files into lighter JPG exports for faster uploads.",
     href: "#next-tools",
-    status: "Coming next",
+    status: "Coming soon",
   },
   {
     name: "Passport and profile photo crop",
     description:
-      "Create upload-friendly images for forms, job applications, and IDs.",
+      "Create upload-friendly images for forms, job applications, and profile photos.",
     href: "#next-tools",
-    status: "Coming next",
+    status: "Coming soon",
   },
   {
     name: "Batch image compressor",
@@ -51,14 +51,14 @@ const tools = [
 export default function Home() {
   return (
     <SiteShell
-      eyebrow="Multi-tool hub"
-      title="Simple online tools for image and file tasks"
-      intro="SnapKB is no longer just one landing page. It is becoming a focused toolbox for image compression, conversion, resizing, and upload-friendly file tasks. The current live tools already work in the browser, and the next ones can be added one by one without rebuilding the whole site."
-      panelTitle="Why a tool hub is stronger"
+      eyebrow="Online image tools"
+      title="Fast online tools for image compression and upload-ready files"
+      intro="SnapKB helps you shrink, prepare, and optimize images for forms, resumes, websites, and everyday uploads. The first tools are focused on fast browser-based compression, with more practical image utilities on the way."
+      panelTitle="Why people choose SnapKB"
       panelItems={[
-        "A broader toolbox feels more like a real product than a single isolated page.",
-        "Users can discover one tool and stay for related tasks instead of bouncing away.",
-        "The site can grow tool by tool while keeping each page aligned with a clear search intent.",
+        "No heavy software and no cluttered workflow.",
+        "Fast results for common upload size requirements.",
+        "Simple tools designed for real tasks, not feature overload.",
       ]}
     >
       <section id="tools" className="grid gap-4 py-2 sm:grid-cols-2 xl:grid-cols-3">
@@ -78,13 +78,47 @@ export default function Home() {
               href={tool.href}
               className="mt-5 inline-flex rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              {tool.status === "Live now" ? "Open tool" : "See roadmap"}
+              {tool.status === "Available" ? "Open tool" : "Preview"}
             </Link>
           </article>
         ))}
       </section>
 
-      <ImageCompressor />
+      <section className="grid gap-6 py-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
+            Popular uses
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink">
+            Built for common image upload tasks
+          </h2>
+          <div className="mt-5 grid gap-3">
+            {[
+              "Compress profile photos for forms and job applications.",
+              "Reduce image size for blog posts, landing pages, and CMS uploads.",
+              "Create smaller files for email attachments and client delivery.",
+              "Prepare web-friendly images without installing desktop software.",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-[1.5rem] border border-[color:var(--border)] bg-white px-4 py-4 text-sm leading-7 text-slate-700"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          id="compressor"
+          className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-4 shadow-float sm:p-5"
+        >
+          <ImageCompressor
+            title="Compress your image to a target size"
+            description="Upload a JPG, PNG, or WebP file and reduce it directly in your browser."
+          />
+        </div>
+      </section>
 
       <section
         id="next-tools"
@@ -92,15 +126,14 @@ export default function Home() {
       >
         <div className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">
-            What comes next
+            More tools
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink">
-            Build one useful tool at a time
+            More practical image utilities are on the way
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-700">
-            The best version of this site is not a random pile of utilities. It should stay tight
-            around image and upload tasks so the brand, SEO structure, and user intent keep
-            reinforcing each other.
+            SnapKB is expanding with a small set of focused tools that solve common image
+            preparation tasks for uploads, content publishing, and everyday work.
           </p>
         </div>
 
@@ -124,28 +157,28 @@ export default function Home() {
       </section>
 
       <SeoCopy
-        heading="How SnapKB should grow"
+        heading="How to use SnapKB"
         steps={[
-          "Keep the tool scope centered on image and upload jobs, not every file type on the web.",
-          "Launch one page per useful job, such as compressing to 100KB or resizing for a form.",
-          "Use each working tool as both a product feature and an SEO landing page.",
-          "Add paid layers later through batch tools, no-ads plans, or faster workflows.",
+          "Choose a tool based on the task you need to finish.",
+          "Upload your image and set the target file size or preset.",
+          "Preview the result and download the optimized version.",
+          "Use dedicated pages like 50KB and 100KB when you need stricter file size targets.",
         ]}
         faq={[
           {
-            question: "Why not keep it as a single landing page?",
+            question: "Does SnapKB upload my files to a server?",
             answer:
-              "A single landing page can validate one keyword, but a small hub gives you more room to build brand memory, cross-link related tools, and keep users on the site longer.",
+              "The current compression flow is browser-based, which means the file can be processed locally without needing a full server upload workflow for the core task.",
           },
           {
-            question: "Should this become a giant all-in-one file site?",
+            question: "Can I compress an image to exactly 100KB or 50KB?",
             answer:
-              "Not yet. A tighter image-first toolbox is easier to explain, easier to rank, and less likely to feel like a thin copy of every other utility site.",
+              "SnapKB tries to get as close as possible to the target size while keeping the image usable. Some files may end up slightly above or below the target depending on the source image.",
           },
           {
-            question: "What should be the next real feature?",
+            question: "What other tools will SnapKB add?",
             answer:
-              "The next strongest additions are image resizing, PNG to JPG conversion, and a simple crop tool for passport or profile uploads because they match the current audience and sharing flow.",
+              "The next planned additions include image resizing, PNG to JPG conversion, profile photo crop tools, and batch compression for users who handle multiple files at once.",
           },
         ]}
       />

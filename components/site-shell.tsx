@@ -6,11 +6,11 @@ export function SiteShell({
   eyebrow,
   title,
   intro,
-  panelTitle = "Why this tool hub converts",
+  panelTitle = "Why people use SnapKB",
   panelItems = [
-    "Users come in with specific jobs to finish, not broad software research.",
-    "Single-purpose tools are fast to explain, fast to use, and easy to expand.",
-    "Each tool can rank for a clear keyword while the hub strengthens the whole site.",
+    "Fast tools for real upload and file-size problems.",
+    "Browser-based workflows for better privacy and lower friction.",
+    "Useful utilities for forms, resumes, websites, and creator tasks.",
   ],
 }: {
   children: ReactNode;
@@ -28,6 +28,7 @@ export function SiteShell({
         </Link>
         <nav className="flex flex-wrap items-center gap-5 text-sm font-medium text-slate-700">
           <Link href="/#tools">Tools</Link>
+          <Link href="/#compressor">Compressor</Link>
           <Link href="/compress-image-to-100kb">100KB</Link>
           <Link href="/compress-image-to-50kb">50KB</Link>
           <Link href="/privacy-policy">Privacy</Link>
@@ -62,7 +63,7 @@ export function SiteShell({
       </main>
 
       <footer className="mx-auto flex w-full max-w-6xl flex-col gap-3 border-t border-[color:var(--border)] px-4 py-8 text-sm text-slate-600 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <p>SnapKB is growing into a lightweight online toolbox for image and file tasks.</p>
+        <p>SnapKB provides lightweight online tools for image compression and upload-ready file tasks.</p>
         <div className="flex items-center gap-4">
           <Link href="/terms-of-service">Terms</Link>
           <Link href="/privacy-policy">Privacy</Link>

@@ -14,12 +14,12 @@ export default function CompressImageTo50KbPage() {
     <SiteShell
       eyebrow="SEO landing page"
       title="Compress image to 50KB online"
-      intro="The 50KB target is useful for stricter upload forms and low-bandwidth use cases. This is one dedicated page inside SnapKB, which is being built into a broader image and file utility site."
-      panelTitle="Why this page matters"
+      intro="Compress JPG, PNG, and WebP images to around 50KB for stricter upload forms, lightweight sharing, and smaller image submissions."
+      panelTitle="Why people use this tool"
       panelItems={[
-        "50KB solves a stricter upload problem than the broader homepage promise.",
-        "Dedicated landing pages help the site capture search traffic with cleaner intent matching.",
-        "This setup lets the hub expand without weakening the strongest single-tool pages.",
+        "Designed for tighter upload limits than a typical image page.",
+        "Quick browser-based compression for smaller attachments.",
+        "Helpful for forms, legacy systems, and low-bandwidth sharing.",
       ]}
     >
       <ImageCompressor
@@ -29,7 +29,7 @@ export default function CompressImageTo50KbPage() {
       />
 
       <SeoCopy
-        heading="When 50KB compression makes sense"
+        heading="How to compress an image to 50KB"
         steps={[
           "Keep the target size at 50KB and upload your image.",
           "Preview the result and check whether the details still work for your use case.",

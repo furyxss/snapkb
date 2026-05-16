@@ -14,12 +14,12 @@ export default function CompressImageTo100KbPage() {
     <SiteShell
       eyebrow="SEO landing page"
       title="Compress image to 100KB online"
-      intro="This page is one working tool inside SnapKB, a focused hub for image and upload-friendly file utilities. Users can upload a file, set 100KB as the target, and download a compressed version in one short flow."
-      panelTitle="Why this page matters"
+      intro="Reduce JPG, PNG, and WebP images to around 100KB for forms, profile photos, content uploads, and other file size limits."
+      panelTitle="Why people use this tool"
       panelItems={[
-        "100KB is one of the clearest search intents in this category.",
-        "The user journey is short, practical, and easy to test on mobile.",
-        "This page can rank on its own while feeding traffic into the broader tool hub.",
+        "A practical target for many forms and website uploads.",
+        "Simple browser-based compression with no heavy setup.",
+        "Useful for profile photos, resume attachments, and lightweight web images.",
       ]}
     >
       <ImageCompressor
@@ -29,7 +29,7 @@ export default function CompressImageTo100KbPage() {
       />
 
       <SeoCopy
-        heading="Why people look for 100KB compression"
+        heading="How to compress an image to 100KB"
         steps={[
           "Upload your image and keep the target set to 100KB.",
           "Let the browser compress the file without installing software.",
@@ -39,7 +39,7 @@ export default function CompressImageTo100KbPage() {
           {
             question: "What is 100KB usually good for?",
             answer:
-              "A 100KB target is common for profile photos, forms, resumes, and lightweight web uploads where a file limit exists.",
+              "A 100KB target is common for profile photos, forms, resumes, and lightweight web uploads where a file size limit exists.",
           },
           {
             question: "Will the image quality still look okay?",
