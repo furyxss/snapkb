@@ -8,16 +8,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        sand: "#f5efe3",
-        ink: "#14213d",
-        cream: "#fffaf0",
-        panel: "#fffdf9",
-        accent: "#ff7a00",
-        accentSoft: "#ffe3c2",
+        sand: "#f6f1e8",
+        ink: "#101828",
+        cream: "#fdf6e9",
+        panel: "#fffdf8",
+        accent: "#f97316",
+        accentSoft: "#ffead5",
         success: "#0f766e",
+        navy: "#111827",
+        skySoft: "#dff3ff",
       },
       boxShadow: {
-        float: "0 20px 60px rgba(20, 33, 61, 0.12)",
+        float: "0 24px 70px rgba(16, 24, 40, 0.11)",
+        crisp: "0 12px 30px rgba(16, 24, 40, 0.10)",
       },
     },
   },

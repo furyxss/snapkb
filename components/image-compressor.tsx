@@ -197,38 +197,38 @@ export function ImageCompressor({
   }
 
   return (
-    <section className="rounded-[2rem] border border-[color:var(--border)] bg-panel p-6 shadow-float sm:p-8">
+    <section className="product-card rounded-[2.5rem] p-4 sm:p-6">
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-5">
+        <div className="space-y-5 rounded-[2rem] bg-white/70 p-5 sm:p-7">
           <div className="space-y-3">
-            <p className="inline-flex rounded-full bg-accentSoft px-3 py-1 text-sm font-semibold text-ink">
+            <p className="inline-flex rounded-full bg-accentSoft px-3 py-1 text-sm font-black text-orange-700">
               Browser-based image compression
             </p>
-            <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <h2 className="text-3xl font-black tracking-[-0.04em] text-ink sm:text-4xl">
               {title}
             </h2>
             <p className="max-w-2xl text-base leading-7 text-slate-700">{description}</p>
           </div>
 
-          <div className="grid gap-4 rounded-[1.5rem] bg-cream p-5 sm:grid-cols-[1fr_auto] sm:items-end">
+          <div className="grid gap-4 rounded-[1.75rem] border border-[color:var(--border)] bg-cream p-5 sm:grid-cols-[1fr_auto] sm:items-end">
             <label className="space-y-2">
-              <span className="block text-sm font-medium text-slate-700">Target file size</span>
+              <span className="block text-sm font-bold text-slate-700">Target file size</span>
               <div className="flex items-center gap-3 rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3">
                 <input
-                  className="w-full border-0 bg-transparent text-lg font-semibold text-ink outline-none"
+                  className="w-full border-0 bg-transparent text-lg font-black text-ink outline-none"
                   type="number"
                   min="5"
                   step="5"
                   value={targetKb}
                   onChange={(event) => setTargetKb(event.target.value)}
                 />
-                <span className="text-sm font-medium uppercase tracking-wide text-slate-500">
+                <span className="text-sm font-black uppercase tracking-wide text-slate-500">
                   KB
                 </span>
               </div>
             </label>
 
-            <label className="inline-flex cursor-pointer items-center justify-center rounded-2xl bg-accent px-6 py-4 text-center text-sm font-semibold text-white transition hover:brightness-95">
+            <label className="inline-flex cursor-pointer items-center justify-center rounded-2xl bg-accent px-6 py-4 text-center text-sm font-black text-white shadow-crisp transition hover:-translate-y-0.5 hover:brightness-95">
               {isWorking ? "Compressing..." : "Choose image"}
               <input
                 className="hidden"
@@ -240,14 +240,14 @@ export function ImageCompressor({
             </label>
           </div>
 
-          <div className="grid gap-3 text-sm text-slate-700 sm:grid-cols-3">
-            <div className="rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3">
+          <div className="grid gap-3 text-sm font-bold text-slate-700 sm:grid-cols-3">
+            <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
               No upload required
             </div>
-            <div className="rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3">
+            <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
               Supports JPG, PNG, WebP
             </div>
-            <div className="rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3">
+            <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
               Works on desktop and mobile
             </div>
           </div>
@@ -259,33 +259,33 @@ export function ImageCompressor({
           ) : null}
         </div>
 
-        <div className="rounded-[1.75rem] border border-[color:var(--border)] bg-white p-5">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <div className="rounded-[2rem] border border-[color:var(--border)] bg-ink p-5 text-white">
+          <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-200">
             Results
           </p>
 
           {!result ? (
-            <div className="mt-4 rounded-[1.5rem] border border-dashed border-[color:var(--border)] bg-cream px-5 py-10 text-center text-sm leading-7 text-slate-600">
+            <div className="mt-4 rounded-[1.5rem] border border-dashed border-white/20 bg-white/10 px-5 py-10 text-center text-sm leading-7 text-slate-300">
               Upload one image to see the original size, compressed size, and download button here.
             </div>
           ) : (
             <div className="mt-4 space-y-5">
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.25rem] bg-cream p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <div className="rounded-[1.25rem] bg-white/10 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-300">
                     Original
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-700">{formatBytes(result.originalBytes)}</p>
+                  <p className="mt-2 text-sm font-bold text-white">{formatBytes(result.originalBytes)}</p>
                 </div>
-                <div className="rounded-[1.25rem] bg-cream p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <div className="rounded-[1.25rem] bg-white/10 p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-300">
                     Compressed
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-700">{formatBytes(result.compressedBytes)}</p>
+                  <p className="mt-2 text-sm font-bold text-white">{formatBytes(result.compressedBytes)}</p>
                 </div>
               </div>
 
-              <div className="rounded-[1.25rem] bg-cream p-4 text-sm text-slate-700">
+              <div className="rounded-[1.25rem] bg-white/10 p-4 text-sm text-slate-200">
                 <div className="flex items-center justify-between gap-3">
                   <span>Target</span>
                   <span className="font-semibold">{formatBytes(result.targetBytes)}</span>
@@ -298,7 +298,7 @@ export function ImageCompressor({
                 </div>
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <span>Reduction</span>
-                  <span className="font-semibold text-success">{reductionText}</span>
+                  <span className="font-semibold text-emerald-200">{reductionText}</span>
                 </div>
               </div>
 
@@ -312,7 +312,7 @@ export function ImageCompressor({
               </div>
 
               <a
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-ink px-5 py-4 text-sm font-semibold text-white transition hover:opacity-92"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-accent px-5 py-4 text-sm font-black text-white transition hover:brightness-95"
                 href={result.compressedUrl}
                 download={`compressed-${fileName || "image"}.jpg`}
               >
