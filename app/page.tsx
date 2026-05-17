@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import { ImageCompressor } from "@/components/image-compressor";
 import { SeoCopy } from "@/components/seo-copy";
 import { SiteShell } from "@/components/site-shell";
@@ -105,6 +106,12 @@ export default function Home() {
           description="Upload a JPG, PNG, or WebP file and SnapKB will reduce it directly in your browser."
         />
       </section>
+
+      <AdsenseAd
+        slot={process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT}
+        className="py-4"
+        format="auto"
+      />
 
       <section id="tools" className="py-12">
         <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
