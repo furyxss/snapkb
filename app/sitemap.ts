@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/compress-image-to-50kb",
     "/png-to-jpg",
     "/docx-to-pdf",
+    "/clean-image-marks",
     "/privacy-policy",
     "/terms-of-service",
   ].map((path) => ({

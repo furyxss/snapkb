@@ -41,11 +41,11 @@ const tools = [
     metric: "Convert",
   },
   {
-    name: "Batch compression",
-    description: "Compress multiple product images or profile assets in a single focused session.",
-    href: "#roadmap",
-    status: "Planned",
-    metric: "Bulk",
+    name: "Clean image marks",
+    description: "Blur or cover text, logos, and private details on images you own.",
+    href: "/clean-image-marks",
+    status: "Live",
+    metric: "Clean",
   },
 ];
 
