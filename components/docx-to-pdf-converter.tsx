@@ -10,7 +10,6 @@ type DocxFile = {
   arrayBuffer: ArrayBuffer;
   fileName: string;
   fileSize: number;
-  pageCount: number;
 };
 
 type RenderedPage = {
@@ -207,14 +206,11 @@ export function DocxToPdfConverter() {
       setDocxFile(null);
 
       const arrayBuffer = await file.arrayBuffer();
-      const pages = await renderHiddenDocument(arrayBuffer);
-
       setDocxFile({
         file,
         arrayBuffer,
         fileName: stripDocxExtension(file.name),
         fileSize: file.size,
-        pageCount: Math.max(1, countEstimatedPages(pages)),
       });
       setProgress("");
     } catch (err) {
@@ -351,14 +347,14 @@ export function DocxToPdfConverter() {
               Multi-page PDF
             </div>
             <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
-              No server upload
+              Server conversion
             </div>
           </div>
 
           <div className="rounded-[1.5rem] border border-amber-200 bg-amber-50 px-4 py-4 text-sm leading-7 text-amber-900">
-            High-fidelity conversion requires a configured conversion provider key on Vercel. If it
-            is not configured, the fallback can still export a PDF, but complex Chinese documents
-            may paginate differently from Word or WPS.
+            The main export path sends the DOCX to SnapKB conversion server, where LibreOffice
+            creates the PDF. The browser fallback stays available for quick tests, but complex
+            Chinese documents may paginate differently from Word or WPS.
           </div>
 
           {error ? (
@@ -400,9 +396,9 @@ export function DocxToPdfConverter() {
                 </div>
                 <div className="rounded-[1.25rem] bg-white/10 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-300">
-                    Pages
+                    Output
                   </p>
-                  <p className="mt-2 text-sm font-bold text-white">{docxFile.pageCount}</p>
+                  <p className="mt-2 text-sm font-bold text-white">PDF</p>
                 </div>
               </div>
 
