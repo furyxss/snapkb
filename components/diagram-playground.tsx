@@ -143,19 +143,9 @@ export function DiagramPlayground({
   }
 
   return (
-    <section className="grid gap-6 py-10 lg:grid-cols-[0.95fr_1.05fr]">
+    <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
       <div className="product-card rounded-[2rem] p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-600">
-              图代码编辑器
-            </p>
-            <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-ink">{title}</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{description}</p>
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-[1.5rem] border border-[color:var(--border)] bg-white/80 p-4">
+        <div className="rounded-[1.5rem] border border-[color:var(--border)] bg-white/80 p-4">
           <p className="text-sm font-black text-ink">自然语言一键生成</p>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             直接描述你要的图，AI 会帮你生成 Mermaid 代码并自动预览。
@@ -218,15 +208,18 @@ export function DiagramPlayground({
           </button>
         </div>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          {tips.map((tip) => (
-            <div
-              key={tip}
-              className="rounded-[1.25rem] border border-[color:var(--border)] bg-white/70 px-4 py-4 text-sm leading-7 text-slate-700"
-            >
-              {tip}
-            </div>
-          ))}
+        <div className="mt-6 rounded-[1.5rem] border border-[color:var(--border)] bg-white/70 p-4">
+          <p className="text-sm font-black text-ink">快速提示</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {tips.map((tip) => (
+              <span
+                key={tip}
+                className="rounded-full bg-[#fff5ea] px-3 py-2 text-xs font-bold text-slate-700"
+              >
+                {tip}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
