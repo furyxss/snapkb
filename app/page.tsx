@@ -1,59 +1,185 @@
-import Link from "next/link";
-import { diagramTools } from "@/lib/diagram-tools";
+import { AdsenseAd } from "@/components/adsense-ad";
+import { SeoCopy } from "@/components/seo-copy";
+import { SiteShell } from "@/components/site-shell";
 
-const homepageTools = [
-  { slug: "er", href: "/generate-er-diagram" },
-  { slug: "sequence", href: "/generate-sequence-diagram" },
-  { slug: "flowchart", href: "/generate-flowchart" },
-  { slug: "data-flow", href: "/generate-data-flow-diagram" },
-  { slug: "architecture", href: "/generate-architecture-diagram" },
+const tools = [
   {
-    slug: "functional-structure",
-    href: "/generate-functional-structure-diagram",
+    name: "Compress to 100KB",
+    description: "适合表单、简历、头像和 CMS 上传的常用压缩目标。",
+    href: "/compress-image-to-100kb",
+    status: "Live",
+    metric: "100 KB",
   },
-  { slug: "use-case", href: "/generate-use-case-diagram" },
+  {
+    name: "Compress to 50KB",
+    description: "适合老系统、小附件、严格上传限制的更小体积版本。",
+    href: "/compress-image-to-50kb",
+    status: "Live",
+    metric: "50 KB",
+  },
+  {
+    name: "PNG to JPG",
+    description: "把 PNG 转成更轻量的 JPG，适合网站、表单和常规图片上传。",
+    href: "/png-to-jpg",
+    status: "Live",
+    metric: "Convert",
+  },
+  {
+    name: "DOCX to PDF",
+    description: "把 Word 文档转成 PDF，方便投递、发送和归档。",
+    href: "/docx-to-pdf",
+    status: "Live",
+    metric: "PDF",
+  },
+  {
+    name: "Clean Image Marks",
+    description: "处理图片里的文字、遮挡和痕迹，用于展示图清理和二次整理。",
+    href: "/clean-image-marks",
+    status: "Live",
+    metric: "Clean",
+  },
+  {
+    name: "Generate ER Diagram",
+    description: "生成数据库实体关系图，适合表结构设计和业务建模。",
+    href: "/generate-er-diagram",
+    status: "Live",
+    metric: "ER",
+  },
+  {
+    name: "Generate Sequence Diagram",
+    description: "生成时序图，梳理角色、接口和服务之间的调用顺序。",
+    href: "/generate-sequence-diagram",
+    status: "Live",
+    metric: "SEQ",
+  },
+  {
+    name: "Generate Flowchart",
+    description: "生成流程图，适合业务步骤、审批链路和操作流程说明。",
+    href: "/generate-flowchart",
+    status: "Live",
+    metric: "Flow",
+  },
+  {
+    name: "Generate Data Flow Diagram",
+    description: "生成数据流图，用来表达数据输入、处理、存储和输出。",
+    href: "/generate-data-flow-diagram",
+    status: "Live",
+    metric: "DFD",
+  },
+  {
+    name: "Generate Architecture Diagram",
+    description: "生成架构图，梳理系统模块、服务和基础设施关系。",
+    href: "/generate-architecture-diagram",
+    status: "Live",
+    metric: "Arch",
+  },
+  {
+    name: "Functional Structure Diagram",
+    description: "生成功能结构图，适合产品模块拆解和后台能力梳理。",
+    href: "/generate-functional-structure-diagram",
+    status: "Live",
+    metric: "Func",
+  },
+  {
+    name: "Generate Use Case Diagram",
+    description: "生成用例图，适合需求分析、角色说明和系统边界表达。",
+    href: "/generate-use-case-diagram",
+    status: "Live",
+    metric: "Use",
+  },
 ];
-
-const tools = homepageTools.map((item) => {
-  const tool = diagramTools.find((entry) => entry.slug === item.slug);
-  if (!tool) {
-    throw new Error(`Missing homepage tool config: ${item.slug}`);
-  }
-
-  return {
-    ...tool,
-    href: item.href,
-  };
-});
 
 export default function Home() {
   return (
-    <main className="mx-auto min-h-screen w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <section className="rounded-[2rem] bg-white px-6 py-8 shadow-[0_22px_70px_rgba(84,67,132,0.12)] sm:px-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-11 w-2 rounded-full bg-[linear-gradient(180deg,#60a5fa_0%,#2563eb_100%)]" />
-          <h1 className="text-4xl font-black tracking-tight text-[#111827] sm:text-5xl">
-            图片生成
-          </h1>
+    <SiteShell
+      eyebrow="SnapKB toolbox"
+      title="Keep SnapKB's style, but put every useful tool in one place."
+      intro="首页不再拆成不同风格的落地页，而是继续沿用 SnapKB 原本的视觉语言，把压缩、转换、清理和图表生成能力统一放进同一个工具箱入口。"
+      primaryCtaHref="/#tools"
+      primaryCtaLabel="Browse all tools"
+      secondaryCtaHref="/compress-image-to-100kb"
+      secondaryCtaLabel="Open 100KB tool"
+      panelTitle="What this homepage does now"
+      panelItems={[
+        "保留 SnapKB 现有品牌风格和页面骨架。",
+        "把原有功能和新图表工具统一到一个工具箱里。",
+        "每个工具继续走自己的独立功能页，不互相打断。",
+      ]}
+    >
+      <section id="tools" className="py-10">
+        <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.2em] text-accent">
+              Unified toolbox
+            </p>
+            <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-ink sm:text-5xl">
+              One tool grid for the whole site
+            </h2>
+          </div>
+          <p className="max-w-2xl text-sm leading-7 text-slate-600">
+            这里统一展示图片压缩、格式转换、文档转换、图片清理，以及 ER 图、时序图、流程图、架构图等全部工具。
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {tools.map((tool) => (
-            <Link
-              key={tool.slug}
+            <a
+              key={tool.name}
               href={tool.href}
-              className="group flex flex-col items-center text-center"
+              className="group product-card flex min-h-64 flex-col justify-between rounded-[2rem] p-6 transition duration-300 hover:-translate-y-1"
             >
-              <div className="flex h-20 w-20 items-center justify-center rounded-[1.4rem] bg-[linear-gradient(180deg,#9d6bff_0%,#7c3aed_100%)] text-3xl font-black text-white shadow-[0_16px_36px_rgba(168,85,247,0.25)] transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_45px_rgba(168,85,247,0.32)]">
-                {tool.badge}
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="rounded-full bg-accentSoft px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-orange-700">
+                    {tool.status}
+                  </span>
+                  <span className="text-sm font-black text-slate-400">{tool.metric}</span>
+                </div>
+                <h3 className="mt-5 text-2xl font-black tracking-[-0.03em] text-ink">
+                  {tool.name}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{tool.description}</p>
               </div>
-              <h2 className="mt-6 text-[2rem] font-medium leading-none text-[#111827]">
-                {tool.title}
-              </h2>
-            </Link>
+              <span className="mt-7 inline-flex w-fit rounded-full bg-ink px-5 py-3 text-sm font-black text-white transition group-hover:bg-accent">
+                Open tool
+              </span>
+            </a>
           ))}
         </div>
       </section>
-    </main>
+
+      <AdsenseAd
+        slot={process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT}
+        className="py-4"
+        format="auto"
+      />
+
+      <SeoCopy
+        heading="How to use the toolbox"
+        steps={[
+          "从首页工具箱里直接找到你要的工具。",
+          "点击进入对应页面后，按该工具的流程上传、编辑或生成内容。",
+          "图表类工具支持代码编辑、实时预览、复制和下载 SVG。",
+          "压缩、转换和清理类工具继续保持原来的独立能力。",
+        ]}
+        faq={[
+          {
+            question: "原来的压缩和转换工具还在吗？",
+            answer:
+              "在。100KB、50KB、PNG 转 JPG、DOCX 转 PDF、图片去痕迹这些工具都还保留，只是现在和新图表工具一起放进同一个工具箱入口。",
+          },
+          {
+            question: "为什么首页样式又变回来了？",
+            answer:
+              "首页现在重新使用 SnapKB 现有的视觉风格，只保留统一工具入口这件事，不再照搬外部参考图的布局。",
+          },
+          {
+            question: "图表工具和原有工具是同一套站点吗？",
+            answer:
+              "是。同一个站点、同一个工具箱入口，只是每个功能继续用自己的独立页面完成实际操作。",
+          },
+        ]}
+      />
+    </SiteShell>
   );
 }

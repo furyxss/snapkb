@@ -19,6 +19,7 @@ export function DiagramPage({ tool }: { tool: DiagramTool }) {
         <DiagramPlayground
           title={tool.title}
           description={tool.description}
+          mermaidType={tool.mermaidType}
           template={tool.template}
           tips={tool.tips}
         />

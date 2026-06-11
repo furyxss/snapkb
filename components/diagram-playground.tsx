@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 type DiagramPlaygroundProps = {
   title: string;
   description: string;
+  mermaidType: string;
   template: string;
   tips: string[];
 };
@@ -35,14 +36,17 @@ function sanitizeId() {
 export function DiagramPlayground({
   title,
   description,
+  mermaidType,
   template,
   tips,
 }: DiagramPlaygroundProps) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [source, setSource] = useState(template);
+  const [prompt, setPrompt] = useState("");
   const [svg, setSvg] = useState("");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +85,47 @@ export function DiagramPlayground({
     window.setTimeout(() => setCopied(false), 1500);
   }
 
+  async function handleGenerate() {
+    const trimmedPrompt = prompt.trim();
+    if (!trimmedPrompt) {
+      setError("请先输入你的图表需求。");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      setError("");
+
+      const response = await fetch("/api/generate-diagram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          toolTitle: title,
+          mermaidType,
+          template,
+          userPrompt: trimmedPrompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.error || "生成失败。");
+      }
+
+      if (!data?.mermaid || typeof data.mermaid !== "string") {
+        throw new Error("AI 没有返回有效 Mermaid 代码。");
+      }
+
+      setSource(data.mermaid);
+    } catch (generateError) {
+      setError(generateError instanceof Error ? generateError.message : "生成失败。");
+    } finally {
+      setIsGenerating(false);
+    }
+  }
+
   function handleDownloadSvg() {
     if (!svg) {
       return;
@@ -107,6 +152,36 @@ export function DiagramPlayground({
             </p>
             <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-ink">{title}</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">{description}</p>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-[1.5rem] border border-[color:var(--border)] bg-white/80 p-4">
+          <p className="text-sm font-black text-ink">自然语言一键生成</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            直接描述你要的图，AI 会帮你生成 Mermaid 代码并自动预览。
+          </p>
+          <textarea
+            className="mt-4 min-h-[120px] w-full resize-y rounded-[1rem] border border-[color:var(--border)] bg-[#faf8ff] px-4 py-3 text-sm leading-7 text-slate-800 outline-none"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+            placeholder={`例如：帮我生成一个${title}，描述用户下单、支付、发货、完成签收的全过程。`}
+          />
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={handleGenerate}
+              disabled={isGenerating}
+              className="rounded-full bg-[#7c3aed] px-5 py-3 text-sm font-black text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isGenerating ? "AI 生成中..." : "AI 一键生成"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setPrompt("")}
+              className="rounded-full border border-[color:var(--border)] bg-white px-5 py-3 text-sm font-black text-ink transition hover:bg-slate-50"
+            >
+              清空描述
+            </button>
           </div>
         </div>
 
