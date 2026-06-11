@@ -15,23 +15,23 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://snapkb.com"),
   title: {
-    default: "SnapKB | Online Image and File Tools",
+    default: "SnapKB | 图片生成工具箱",
     template: "%s | SnapKB",
   },
   description:
-    "SnapKB is a lightweight online tool hub for image and file tasks like compressing images to 50KB, 100KB, and other upload-friendly sizes.",
+    "SnapKB 是一个在线图片生成工具箱，可用于生成 ER 图、时序图、流程图、数据流图、架构图、功能结构图和用例图。",
   openGraph: {
-    title: "SnapKB | Online Image and File Tools",
+    title: "SnapKB | 图片生成工具箱",
     description:
-      "Use SnapKB for lightweight browser-based image and file utilities built for uploads, forms, creators, and quick tasks.",
+      "使用 SnapKB 在线生成 ER 图、时序图、流程图、数据流图、架构图、功能结构图和用例图。",
     siteName: "SnapKB",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SnapKB | Online Image and File Tools",
+    title: "SnapKB | 图片生成工具箱",
     description:
-      "A small, practical online toolbox for image compression and other upload-friendly file utilities.",
+      "一个可在线生成多种结构图和流程图的图片工具箱。",
   },
 };
 
@@ -44,7 +44,7 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="zh-CN"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>

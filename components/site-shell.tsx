@@ -39,20 +39,18 @@ export function SiteShell({
             <span>SnapKB</span>
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-700 md:flex">
-            <Link className="transition hover:text-ink" href="/#tools">Toolbox</Link>
-            <Link className="transition hover:text-ink" href="/#compressor">Compressor</Link>
-            <Link className="transition hover:text-ink" href="/compress-image-to-100kb">100KB</Link>
-            <Link className="transition hover:text-ink" href="/compress-image-to-50kb">50KB</Link>
-            <Link className="transition hover:text-ink" href="/png-to-jpg">PNG to JPG</Link>
-            <Link className="transition hover:text-ink" href="/docx-to-pdf">DOCX to PDF</Link>
-            <Link className="transition hover:text-ink" href="/clean-image-marks">Clean marks</Link>
-            <Link className="transition hover:text-ink" href="/privacy-policy">Privacy</Link>
+            <Link className="transition hover:text-ink" href="/">工具箱</Link>
+            <Link className="transition hover:text-ink" href="/generate-er-diagram">ER图</Link>
+            <Link className="transition hover:text-ink" href="/generate-sequence-diagram">时序图</Link>
+            <Link className="transition hover:text-ink" href="/generate-flowchart">流程图</Link>
+            <Link className="transition hover:text-ink" href="/generate-architecture-diagram">架构图</Link>
+            <Link className="transition hover:text-ink" href="/generate-use-case-diagram">用例图</Link>
           </nav>
           <Link
-            href="/#compressor"
+            href="/"
             className="rounded-full bg-ink px-5 py-3 text-sm font-bold text-white shadow-crisp transition hover:-translate-y-0.5 hover:bg-slate-800"
           >
-            Start free
+            返回首页
           </Link>
         </div>
       </header>
@@ -104,19 +102,19 @@ export function SiteShell({
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-200">
-                      Live workspace
+                      Diagram workspace
                     </p>
-                    <h2 className="mt-2 text-2xl font-black tracking-tight">Image ready for upload</h2>
+                    <h2 className="mt-2 text-2xl font-black tracking-tight">图表实时生成预览</h2>
                   </div>
                   <div className="rounded-full bg-emerald-400/15 px-3 py-1 text-sm font-bold text-emerald-200">
-                    Private
+                    在线生成
                   </div>
                 </div>
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
-                    ["Original", "2.8 MB"],
-                    ["Target", "100 KB"],
-                    ["Result", "96 KB"],
+                    ["工具数", "7 个"],
+                    ["格式", "SVG"],
+                    ["方式", "实时预览"],
                   ].map(([label, value]) => (
                     <div key={label} className="rounded-2xl bg-white/10 p-4">
                       <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-300">{label}</p>
@@ -126,20 +124,20 @@ export function SiteShell({
                 </div>
                 <div className="mt-5 overflow-hidden rounded-[1.5rem] bg-[#fdf6e9] p-4 text-ink">
                   <div className="flex items-center justify-between text-sm font-bold text-slate-500">
-                    <span>Compression quality</span>
-                    <span>Balanced</span>
+                    <span>生成方式</span>
+                    <span>Mermaid</span>
                   </div>
                   <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-200">
                     <div className="h-full w-[82%] rounded-full bg-accent" />
                   </div>
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-2xl bg-white p-4 shadow-crisp">
-                      <p className="text-sm font-bold text-slate-500">Best for</p>
-                      <p className="mt-1 text-lg font-black">Forms and profiles</p>
+                      <p className="text-sm font-bold text-slate-500">适合</p>
+                      <p className="mt-1 text-lg font-black">需求梳理与设计说明</p>
                     </div>
                     <div className="rounded-2xl bg-white p-4 shadow-crisp">
-                      <p className="text-sm font-bold text-slate-500">Uploads</p>
-                      <p className="mt-1 text-lg font-black">Fast approval</p>
+                      <p className="text-sm font-bold text-slate-500">输出</p>
+                      <p className="mt-1 text-lg font-black">可复制可下载</p>
                     </div>
                   </div>
                 </div>
@@ -164,10 +162,10 @@ export function SiteShell({
         {children}
 
         <footer className="mt-8 flex flex-col gap-3 border-t border-[color:var(--border)] py-8 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between">
-          <p>SnapKB is a lightweight online toolbox for image compression and upload-ready file tasks.</p>
+          <p>SnapKB 是一个在线图片生成工具箱，支持常见结构图、流程图和分析图生成。</p>
           <div className="flex items-center gap-4">
-            <Link href="/terms-of-service">Terms</Link>
-            <Link href="/privacy-policy">Privacy</Link>
+            <Link href="/terms-of-service">条款</Link>
+            <Link href="/privacy-policy">隐私</Link>
           </div>
         </footer>
       </main>

@@ -1,0 +1,175 @@
+"use client";
+
+import mermaid from "mermaid";
+import { useEffect, useRef, useState } from "react";
+
+type DiagramPlaygroundProps = {
+  title: string;
+  description: string;
+  template: string;
+  tips: string[];
+};
+
+let mermaidReady = false;
+
+function ensureMermaid() {
+  if (!mermaidReady) {
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "loose",
+      theme: "default",
+      fontFamily: "Arial, Helvetica, sans-serif",
+      flowchart: {
+        htmlLabels: true,
+        curve: "basis",
+      },
+    });
+    mermaidReady = true;
+  }
+}
+
+function sanitizeId() {
+  return `diagram-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export function DiagramPlayground({
+  title,
+  description,
+  template,
+  tips,
+}: DiagramPlaygroundProps) {
+  const previewRef = useRef<HTMLDivElement>(null);
+  const [source, setSource] = useState(template);
+  const [svg, setSvg] = useState("");
+  const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function renderDiagram() {
+      try {
+        ensureMermaid();
+        const { svg: renderedSvg } = await mermaid.render(sanitizeId(), source);
+        if (!cancelled) {
+          setSvg(renderedSvg);
+          setError("");
+        }
+      } catch (renderError) {
+        if (!cancelled) {
+          setError(renderError instanceof Error ? renderError.message : "图表渲染失败。");
+        }
+      }
+    }
+
+    renderDiagram();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [source]);
+
+  useEffect(() => {
+    if (previewRef.current) {
+      previewRef.current.innerHTML = svg;
+    }
+  }, [svg]);
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(source);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  }
+
+  function handleDownloadSvg() {
+    if (!svg) {
+      return;
+    }
+
+    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${title}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+    <section className="grid gap-6 py-10 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="product-card rounded-[2rem] p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-600">
+              图代码编辑器
+            </p>
+            <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-ink">{title}</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{description}</p>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-[1.5rem] border border-[color:var(--border)] bg-white/80 p-4">
+          <textarea
+            className="min-h-[420px] w-full resize-y border-0 bg-transparent font-mono text-sm leading-7 text-slate-800 outline-none"
+            value={source}
+            onChange={(event) => setSource(event.target.value)}
+            spellCheck={false}
+          />
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="rounded-full bg-ink px-5 py-3 text-sm font-black text-white transition hover:bg-slate-800"
+          >
+            {copied ? "已复制代码" : "复制代码"}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadSvg}
+            className="rounded-full border border-[color:var(--border)] bg-white px-5 py-3 text-sm font-black text-ink transition hover:bg-slate-50"
+          >
+            下载 SVG
+          </button>
+          <button
+            type="button"
+            onClick={() => setSource(template)}
+            className="rounded-full border border-[color:var(--border)] bg-white px-5 py-3 text-sm font-black text-ink transition hover:bg-slate-50"
+          >
+            恢复模板
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {tips.map((tip) => (
+            <div
+              key={tip}
+              className="rounded-[1.25rem] border border-[color:var(--border)] bg-white/70 px-4 py-4 text-sm leading-7 text-slate-700"
+            >
+              {tip}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-[2rem] bg-ink p-5 text-white shadow-float">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-200">实时预览</p>
+        {error ? (
+          <div className="mt-4 rounded-[1.5rem] border border-red-300/30 bg-red-400/10 px-5 py-4 text-sm leading-7 text-red-100">
+            {error}
+          </div>
+        ) : null}
+
+        <div className="mt-4 rounded-[1.5rem] bg-white p-5 text-slate-900">
+          <div
+            ref={previewRef}
+            className="diagram-preview min-h-[540px] overflow-auto rounded-[1rem] bg-white"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
