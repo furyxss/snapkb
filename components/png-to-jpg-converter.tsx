@@ -2,12 +2,13 @@
 
 import { ChangeEvent, useMemo, useState } from "react";
 
-type ConvertResult = {
+type ConversionResult = {
+  originalUrl: string;
+  convertedUrl: string;
   originalBytes: number;
-  jpgBytes: number;
+  convertedBytes: number;
   width: number;
   height: number;
-  jpgUrl: string;
 };
 
 function formatBytes(bytes: number) {
@@ -45,12 +46,12 @@ function loadImage(src: string) {
   });
 }
 
-function canvasToJpgBlob(canvas: HTMLCanvasElement, quality: number) {
+function canvasToBlob(canvas: HTMLCanvasElement, quality: number) {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
         if (!blob) {
-          reject(new Error("Could not export the JPG file."));
+          reject(new Error("Could not export the JPG image."));
           return;
         }
 
@@ -72,40 +73,51 @@ async function convertPngToJpg(file: File, quality: number, background: string) 
 
   const context = canvas.getContext("2d");
   if (!context) {
-    throw new Error("Could not initialize the converter.");
+    throw new Error("Could not initialize the PNG to JPG converter.");
   }
 
-  // JPG does not support transparency, so transparent pixels need a background.
+  // JPG does not support transparency, so transparent areas need a solid background.
   context.fillStyle = background;
   context.fillRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(image, 0, 0);
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const convertedBlob = await canvasToBlob(canvas, quality);
 
   return {
-    jpgBlob: await canvasToJpgBlob(canvas, quality),
+    originalUrl,
+    convertedBlob,
     width: image.width,
     height: image.height,
   };
 }
 
+function toJpgDownloadName(fileName: string) {
+  return fileName.replace(/\.png$/i, "") + ".jpg";
+}
+
 export function PngToJpgConverter() {
-  const [quality, setQuality] = useState("0.86");
+  const [quality, setQuality] = useState(88);
   const [background, setBackground] = useState("#ffffff");
-  const [result, setResult] = useState<ConvertResult | null>(null);
-  const [fileName, setFileName] = useState("");
+  const [result, setResult] = useState<ConversionResult | null>(null);
   const [isWorking, setIsWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fileName, setFileName] = useState("");
 
-  const savingsText = useMemo(() => {
+  const savingText = useMemo(() => {
     if (!result) {
       return null;
     }
 
-    const reduction = Math.round((1 - result.jpgBytes / result.originalBytes) * 100);
+    const reduction = Math.round((1 - result.convertedBytes / result.originalBytes) * 100);
     if (reduction > 0) {
       return `${reduction}% smaller`;
     }
 
-    return `${Math.abs(reduction)}% larger`;
+    if (reduction < 0) {
+      return `${Math.abs(reduction)}% larger`;
+    }
+
+    return "Same size";
   }, [result]);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
@@ -120,34 +132,28 @@ export function PngToJpgConverter() {
       return;
     }
 
-    const parsedQuality = Number(quality);
-    if (!Number.isFinite(parsedQuality) || parsedQuality < 0.1 || parsedQuality > 1) {
-      setError("Please choose a JPG quality between 0.1 and 1.");
-      event.target.value = "";
-      return;
-    }
-
     try {
       setIsWorking(true);
       setError(null);
       setResult(null);
-      setFileName(file.name.replace(/\.png$/i, ""));
+      setFileName(file.name);
 
-      const { jpgBlob, width, height } = await convertPngToJpg(
+      const { originalUrl, convertedBlob, width, height } = await convertPngToJpg(
         file,
-        parsedQuality,
+        quality / 100,
         background,
       );
 
       setResult({
+        originalUrl,
+        convertedUrl: URL.createObjectURL(convertedBlob),
         originalBytes: file.size,
-        jpgBytes: jpgBlob.size,
+        convertedBytes: convertedBlob.size,
         width,
         height,
-        jpgUrl: URL.createObjectURL(jpgBlob),
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "PNG to JPG conversion failed.");
+      setError(err instanceof Error ? err.message : "Conversion failed.");
     } finally {
       setIsWorking(false);
       event.target.value = "";
@@ -163,26 +169,31 @@ export function PngToJpgConverter() {
               PNG to JPG converter
             </p>
             <h2 className="text-3xl font-black tracking-[-0.04em] text-ink sm:text-4xl">
-              Convert transparent-free PNG files into upload-friendly JPGs
+              Convert PNG images into upload-friendly JPG files
             </h2>
             <p className="max-w-2xl text-base leading-7 text-slate-700">
-              Choose a PNG, set the JPG quality, pick the background used for transparent pixels,
-              and download a clean JPG export.
+              Choose a PNG, set the JPG quality, decide which background fills transparent pixels,
+              and download a clean JPG export directly in your browser.
             </p>
           </div>
 
           <div className="grid gap-4 rounded-[1.75rem] border border-[color:var(--border)] bg-cream p-5 sm:grid-cols-2">
-            <label className="space-y-2">
+            <label className="space-y-3">
               <span className="block text-sm font-bold text-slate-700">JPG quality</span>
-              <select
-                className="w-full rounded-2xl border border-[color:var(--border)] bg-white px-4 py-3 text-sm font-black text-ink outline-none"
+              <input
+                className="w-full accent-[color:var(--accent)]"
+                type="range"
+                min="60"
+                max="95"
+                step="1"
                 value={quality}
-                onChange={(event) => setQuality(event.target.value)}
-              >
-                <option value="0.92">High quality</option>
-                <option value="0.86">Balanced</option>
-                <option value="0.72">Smaller file</option>
-              </select>
+                onChange={(event) => setQuality(Number(event.target.value))}
+              />
+              <div className="flex items-center justify-between text-sm text-slate-600">
+                <span>Smaller file</span>
+                <span className="font-bold text-ink">{quality}%</span>
+                <span>Better detail</span>
+              </div>
             </label>
 
             <label className="space-y-2">
@@ -217,7 +228,7 @@ export function PngToJpgConverter() {
               PNG input only
             </div>
             <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
-              JPG output
+              Transparent areas become your chosen background
             </div>
             <div className="rounded-2xl border border-[color:var(--border)] bg-white/80 px-4 py-3">
               Local browser conversion
@@ -251,9 +262,9 @@ export function PngToJpgConverter() {
                 </div>
                 <div className="rounded-[1.25rem] bg-white/10 p-4">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-300">
-                    JPG output
+                    Converted JPG
                   </p>
-                  <p className="mt-2 text-sm font-bold text-white">{formatBytes(result.jpgBytes)}</p>
+                  <p className="mt-2 text-sm font-bold text-white">{formatBytes(result.convertedBytes)}</p>
                 </div>
               </div>
 
@@ -265,24 +276,36 @@ export function PngToJpgConverter() {
                   </span>
                 </div>
                 <div className="mt-3 flex items-center justify-between gap-3">
+                  <span>Quality</span>
+                  <span className="font-semibold">{quality}%</span>
+                </div>
+                <div className="mt-3 flex items-center justify-between gap-3">
                   <span>Size change</span>
-                  <span className="font-semibold text-emerald-200">{savingsText}</span>
+                  <span className="font-semibold text-emerald-200">{savingText}</span>
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-[1.5rem] border border-white/15 bg-white">
-                {/* Blob previews are generated client-side, so a plain img tag keeps the tool simple. */}
-                <img
-                  src={result.jpgUrl}
-                  alt="Converted JPG preview"
-                  className="block max-h-72 w-full object-contain bg-slate-50"
-                />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="overflow-hidden rounded-[1.5rem] border border-white/15 bg-white">
+                  <img
+                    src={result.originalUrl}
+                    alt="Original PNG preview"
+                    className="block max-h-72 w-full object-contain bg-[linear-gradient(45deg,#f3f4f6_25%,#ffffff_25%,#ffffff_50%,#f3f4f6_50%,#f3f4f6_75%,#ffffff_75%,#ffffff_100%)] [background-size:24px_24px]"
+                  />
+                </div>
+                <div className="overflow-hidden rounded-[1.5rem] border border-white/15 bg-white">
+                  <img
+                    src={result.convertedUrl}
+                    alt="Converted JPG preview"
+                    className="block max-h-72 w-full object-contain bg-slate-50"
+                  />
+                </div>
               </div>
 
               <a
                 className="inline-flex w-full items-center justify-center rounded-2xl bg-accent px-5 py-4 text-sm font-black text-white transition hover:brightness-95"
-                href={result.jpgUrl}
-                download={`${fileName || "converted-image"}.jpg`}
+                href={result.convertedUrl}
+                download={toJpgDownloadName(fileName || "image.png")}
               >
                 Download JPG
               </a>

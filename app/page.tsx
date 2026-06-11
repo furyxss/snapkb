@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const tools = [
   {
-    name: "Compress to target size",
+    name: "Custom Size Compressor",
     description: "Set any KB target and export an upload-ready JPG, PNG, or WebP image.",
     href: "/#compressor",
     status: "Live",
@@ -35,7 +35,7 @@ const tools = [
   },
   {
     name: "PNG to JPG",
-    description: "Convert large transparent-free PNG files into lighter, easier-to-upload JPGs.",
+    description: "Convert PNG files into lighter JPGs for forms, websites, and quick uploads.",
     href: "/png-to-jpg",
     status: "Live",
     metric: "Convert",
@@ -46,6 +46,20 @@ const tools = [
     href: "/clean-image-marks",
     status: "Live",
     metric: "Clean",
+  },
+  {
+    name: "Resize Image Dimensions",
+    description: "Prepare width and height for platform-specific upload requirements.",
+    href: "/tools/resize-image-dimensions",
+    status: "Coming soon",
+    metric: "Resize",
+  },
+  {
+    name: "Passport Photo Crop",
+    description: "Create upload-ready passport and profile photos with the right framing.",
+    href: "/tools/passport-photo-crop",
+    status: "Coming soon",
+    metric: "Crop",
   },
 ];
 
@@ -59,24 +73,24 @@ const useCases = [
 export default function Home() {
   return (
     <SiteShell
-      eyebrow="Private image compression, built for real upload limits"
-      title="Make images pass upload limits without the usual friction."
-      intro="SnapKB is a focused image utility workspace for shrinking files to exact KB targets, previewing the result, and downloading an upload-ready image in seconds."
+      eyebrow="Private image compression and lightweight file tools"
+      title="Open the right tool and finish the upload job faster."
+      intro="SnapKB now works like a practical toolbox for common file and image tasks. Jump into a dedicated tool page, or use the live compressor on the homepage when you need a custom target size."
       primaryCtaLabel="Start compressing"
-      secondaryCtaLabel="Open 50KB tool"
-      secondaryCtaHref="/compress-image-to-50kb"
+      secondaryCtaLabel="Open PNG to JPG"
+      secondaryCtaHref="/png-to-jpg"
       panelTitle="Product promise"
       panelItems={[
-        "Your image is processed in the browser for the core compression flow.",
-        "Targets are designed around real form, profile, resume, and website limits.",
-        "The interface stays focused on finishing the upload task, not editing everything.",
+        "Your core image workflows run directly in the browser.",
+        "Dedicated utility pages stay focused on one real job at a time.",
+        "The homepage works like a toolbox instead of a generic marketing page.",
       ]}
     >
       <section className="grid gap-4 py-6 sm:grid-cols-2 lg:grid-cols-4">
         {[
           ["No signup", "Open the tool and finish the task immediately."],
-          ["Privacy-first", "Compression runs locally in your browser."],
-          ["Target sizes", "Use 50KB, 100KB, or your own custom value."],
+          ["Privacy-first", "Core image processing runs locally in your browser."],
+          ["Toolbox flow", "Choose 50KB, 100KB, PNG to JPG, DOCX to PDF, and more."],
           ["Mobile ready", "Works for quick fixes from desktop or phone."],
         ].map(([title, copy]) => (
           <div key={title} className="product-card rounded-[1.75rem] p-5">
@@ -90,10 +104,10 @@ export default function Home() {
         <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.2em] text-accent">
-              Core product
+              Featured tool
             </p>
             <h2 className="mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] text-ink sm:text-5xl">
-              The compression workspace
+              The live compression workspace
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-slate-600">
@@ -117,10 +131,10 @@ export default function Home() {
         <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.2em] text-accent">
-              Tool suite
+              Toolbox
             </p>
             <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-ink sm:text-5xl">
-              One small toolbox for upload-ready images
+              Pick a tool and jump straight into the job
             </h2>
           </div>
           <Link
@@ -153,7 +167,7 @@ export default function Home() {
                 href={tool.href}
                 className="mt-7 inline-flex w-fit rounded-full bg-ink px-5 py-3 text-sm font-black text-white transition group-hover:bg-accent"
               >
-                {tool.status === "Live" ? "Open tool" : "Preview roadmap"}
+                {tool.status === "Live" ? "Open tool" : "View page"}
               </Link>
             </article>
           ))}
@@ -169,8 +183,8 @@ export default function Home() {
             Built for the tiny upload problems that waste real time
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-600">
-            SnapKB is intentionally narrow: it helps people make files accepted by forms, portals,
-            marketplaces, CMS tools, and everyday workflows.
+            SnapKB is intentionally practical: it helps people make files accepted by forms,
+            portals, marketplaces, CMS tools, and everyday workflows.
           </p>
         </div>
 
@@ -187,14 +201,14 @@ export default function Home() {
       <section id="roadmap" className="grid gap-6 py-12 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-[2.25rem] bg-ink p-7 text-white shadow-float">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-orange-200">
-            Roadmap
+            Next up
           </p>
           <h2 className="mt-3 text-4xl font-black tracking-[-0.04em]">
-            Next: resize, convert, crop, and batch workflows
+            More dedicated utility pages can plug into the toolbox
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-300">
-            The product direction is a compact suite of practical image utilities, with each tool
-            built around a clear upload or publishing job.
+            The homepage now behaves like a compact toolbox, so new utilities can be added as
+            dedicated cards and pages without reworking the overall structure.
           </p>
         </div>
 
@@ -202,9 +216,9 @@ export default function Home() {
           <div className="grid gap-4">
             {[
               "Resize by width, height, or platform preset",
-              "Convert JPG and WebP formats",
-              "Crop profile and document-style photos",
-              "Batch compress images for creators and operators",
+              "Crop passport and profile photos",
+              "Add more conversion shortcuts for upload tasks",
+              "Expand the toolbox without changing the homepage pattern",
             ].map((item) => (
               <div
                 key={item}
@@ -220,10 +234,10 @@ export default function Home() {
       <SeoCopy
         heading="How to use SnapKB"
         steps={[
-          "Choose a target size or open a preset page like 50KB or 100KB.",
-          "Upload a JPG, PNG, or WebP image from your device.",
-          "Preview the compressed result and compare the file size.",
-          "Download the optimized image and use it in your form, website, or profile.",
+          "Open a tool from the homepage toolbox or jump into the live compressor.",
+          "If you are compressing an image, choose the target size or preset you need.",
+          "Preview the result and compare the file size before downloading.",
+          "Download the optimized file and switch tools whenever the task changes.",
         ]}
         faq={[
           {
@@ -232,14 +246,14 @@ export default function Home() {
               "The current compression workflow runs in the browser, so the core file processing can happen locally on your device.",
           },
           {
-            question: "Can SnapKB hit exactly 100KB or 50KB?",
+            question: "Can I still use the dedicated 50KB and 100KB pages?",
             answer:
-              "It tries to get as close as possible while keeping the image usable. Some source images may land slightly above or below the target.",
+              "Yes. The toolbox homepage links into those dedicated pages so preset-based compression stays available.",
           },
           {
-            question: "What makes this different from a full photo editor?",
+            question: "Why keep a live compressor on the homepage too?",
             answer:
-              "SnapKB is built for one job: making images upload-ready quickly. It avoids heavyweight editing controls unless they help finish that task.",
+              "The homepage compressor is the fastest option for custom KB targets, while dedicated tool pages like PNG to JPG or fixed presets are better for specific jobs.",
           },
         ]}
       />

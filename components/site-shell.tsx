@@ -39,7 +39,7 @@ export function SiteShell({
             <span>SnapKB</span>
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-700 md:flex">
-            <Link className="transition hover:text-ink" href="/#tools">Tools</Link>
+            <Link className="transition hover:text-ink" href="/#tools">Toolbox</Link>
             <Link className="transition hover:text-ink" href="/#compressor">Compressor</Link>
             <Link className="transition hover:text-ink" href="/compress-image-to-100kb">100KB</Link>
             <Link className="transition hover:text-ink" href="/compress-image-to-50kb">50KB</Link>
@@ -164,7 +164,7 @@ export function SiteShell({
         {children}
 
         <footer className="mt-8 flex flex-col gap-3 border-t border-[color:var(--border)] py-8 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between">
-          <p>SnapKB provides lightweight online tools for image compression and upload-ready file tasks.</p>
+          <p>SnapKB is a lightweight online toolbox for image compression and upload-ready file tasks.</p>
           <div className="flex items-center gap-4">
             <Link href="/terms-of-service">Terms</Link>
             <Link href="/privacy-policy">Privacy</Link>
